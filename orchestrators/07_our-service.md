@@ -17,7 +17,7 @@
 
 ## Build new image
 
-`docker build -t adobe-ws/deals:v3 .`
+`docker build -t codenode-ws/deals:v3 .`
 
 ----
 
@@ -41,7 +41,7 @@ spec:
     spec:
       containers:
       - name: deals
-        image: adobe-ws/deals:v3
+        image: codenode-ws/deals:v3
         imagePullPolicy: Never
         ports:
         - containerPort: 8080
@@ -150,7 +150,7 @@ Find port
 
 ## Build new version
 
-`docker build -t adobe-ws/deals:v4 .`
+`docker build -t codenode-ws/deals:v4 .`
 
 ----
 
@@ -177,7 +177,7 @@ spec:
     spec:
       containers:
       - name: deals
-        image: adobe-ws/deals:v3
+        image: codenode-ws/deals:v3
         ports:
         - containerPort: 8080
 ```
@@ -193,7 +193,7 @@ Apply changes and watch pods...
 
 ## Update to latest image
 
-`kubectl set image deployment/deals deals=adobe-ws/deals:v4`
+`kubectl set image deployment/deals deals=codenode-ws/deals:v4`
 `kubectl rollout status deployment/deals`
 `kubectl get pods`
 

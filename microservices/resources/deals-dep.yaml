@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
       - name: deals
-        image: adobe-workshop/deal:v3
+        image: codenode-workshop/deal:v3
         imagePullPolicy: Never
         ports:
         - containerPort: 8080
