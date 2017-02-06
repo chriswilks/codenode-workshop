@@ -3,9 +3,7 @@
 At the end of this lesson, you will be able to:
 * Explain what volumes are and what they are used for
 * Learn the different methods of mounting a volume in a container
-* Mount volumes during the docker run command and also in a Dockerfile
-* Explain how data containers work
-* Create some data containers
+* Mount volumes using the `docker run` command and also in a Dockerfile
 
 ----
 
@@ -20,20 +18,22 @@ A Volume is a designated directory in a container, which is designed to persist 
 ----
 
 ### Working with Volumes
-Docker volumes can be used:
+Docker volumes can be used to:
+
 * De-couple the data that is stored, from the container which created the data
-* Bypassing the copy-on-write system to obtain native disk I/O performance.
-* Bypassing copy-on-write to leave some files out of docker commit.
-* Sharing a directory between multiple containers.
-* Sharing a directory between the host and a container.
-* Sharing a single file between the host and a container
+* Bypass the copy-on-write system to obtain native disk I/O performance.
+* Bypass copy-on-write to leave some files out of docker commit.
+* Share a directory between multiple containers.
+* Share a directory between the host and a container.
+* Share a single file between the host and a container
 
 ----
 
 ### Docker volume command
 
 The `docker volume` command contains a number of sub commands used to create and manage volumes
-Commands are 
+
+The commands are: 
 ```
 docker volume create
 docker volume ls
@@ -448,43 +448,4 @@ docker attach <container name>
 Verify that you can see both the test.txt and test2.txt files
 
 ----
-
-### Data containers
-
-* A data container is a container created for the purpose of referencing one or many volumes
-* Data containers don’t run any application or process
-* Used when you have persistent data that needs to be shared with other containers 
-* When creating a data container, you should give it a custom name to make it easier to reference
-
-----
-
-### Creating data containers 
-
-* We just need to run a container and specify a volume
-* Should run a container using a lightweight image such as busybox
-* No need to run any particular process, just run `“true”`
-
-Run our data container using the busybox image
-```
-docker run --name mydata -v /data/app1 busybox true
-```
-
-----
-
-### Using data containers
-
-* Data containers can be used by other containers via the 
-    * `--volumes-from` option in the docker run command
-* Reference your data container by its container name. For example: 
-    * `--volumes-from datacontainer …`
-
-----
-
-### Backup your data containers
-
-* It’s a good idea to back up data containers such as our logdata container, which has our NGINX log files
-* Backups can be done with the following process:
-    * Create a new container and mount the volumes from the data container
-    * Mount a host directory as another volume on the container
-    * Run the tar process to backup the data container volume onto your host folder
 

@@ -16,8 +16,8 @@ If a container is named prod-db, I can do:
 ```bash
 docker logs prod-db
 docker stop prod-db
-etc.
 ```
+etc.
 
 ----
 
@@ -33,7 +33,7 @@ Examples: happy_curie, clever_hopper, jovial_lovelace ...
 ----
 
 ### Specifying a name
-Specifying a name
+
 You can set the name of the container when you create it.
 ```bash
 docker run --name prod-db redis
@@ -46,6 +46,7 @@ This lets us enforce unicity of a given resource.
 ----
 
 ### Renaming containers
+
 Since Docker 1.5, you can rename containers with docker rename.   
 This allows you to "free up" a name without destroying the associated container, for instance.
 
@@ -53,7 +54,7 @@ This allows you to "free up" a name without destroying the associated container,
 
 ### Inspecting a container
 
-The `docker inspect` command will output a very detailed JSON map.
+The `docker inspect` command will output details on containers and images:
 
 ```JSON
 [
@@ -84,13 +85,13 @@ The `docker inspect` command will output a very detailed JSON map.
 ### Parsing JSON with the shell
 
 You could grep and cut or awk the output of docker inspect.
-* But it`s a PITA
-* If you really must parse JSON from the Shell, use JQ!
+* Tends to be awkward and errorpront
+* Try using jq
 ```bash
 docker inspect <containerID> | jq .
 ```
 
-We will see a better solution which doesn't require extra tools.
+Or...
 
 ----
 

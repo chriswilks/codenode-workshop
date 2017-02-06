@@ -269,6 +269,7 @@ $ docker attach <containerID>
     * If you hit ^C, the signal will be proxied to the container.
 
 ----
+
 ### Prefer docker exec
 
 ```

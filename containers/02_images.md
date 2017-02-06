@@ -54,11 +54,12 @@ Note: you will probably never need to use scratch.
 
 ----
 
-### Creating other images
+### Creating New Images
 
 `docker commit`
 * Saves all the changes made to a container into a new layer.
 * Creates a new image (effectively a copy of the container).
+
 `docker build`
 * Performs a repeatable build sequence.
 * This is the preferred method!
@@ -70,7 +71,7 @@ There are three namespaces:
 * Root-like
     * ubuntu
 * User (and organizations)
-    * amouat/network-utils
+    * mesosphere/marathon
 * Self-Hosted
     * registry.example.com:5000/my-private-image
 
@@ -80,8 +81,8 @@ There are three namespaces:
 The root namespace is for "official images". They are put there by Docker Inc., but they are generally authored and maintained by third parties.
 
 Those images include:
-* Small, "swiss-army-knife" images like busybox.
 * Distro images to be used as bases for your builds, like ubuntu, fedora...
+* Images for building and running software e.g. golang, php, java
 * Ready-to-use components and services, like redis, postgresql...
 
 ----
@@ -92,7 +93,7 @@ For example:
 * mesosphere/marathon
 The Docker Hub user is:
 * mesosphere
-The image name is:
+The repository name is:
 * marathon
 
 ----
@@ -106,7 +107,7 @@ For example:
 * localhost:5000/wordpress
 The remote host and port is:
 * localhost:5000
-The image name is:
+The repository name is:
 * wordpress
 
 ----
@@ -185,7 +186,6 @@ docker pull alpine:latest
 ```
 As seen previously, images are made up of layers.
 * Docker has downloaded all the necessary layers.
-* In this example, :latest indicates that we pulled the lastest Version of Alpine Linux.
 
 ----
 
@@ -193,7 +193,10 @@ As seen previously, images are made up of layers.
 Images can have tags.
 * Tags define image versions or variants.
 * `docker pull alpine` will refer to `alpine:latest`.
-The `:latest` tag is generally updated often.
+* But latest confers no special meaning other than being a default
+* It is not automically kept up-to-date
+* It is not guaranteed to exist
+* Idiomatically it will be the latest stable version
 
 ----
 
@@ -201,7 +204,6 @@ The `:latest` tag is generally updated often.
 Don't specify tags:
 * When doing rapid testing and prototyping.
 * When experimenting.
-* When you want the latest version.
 
 Do specify tags:
 * When recording a procedure into a script.
@@ -718,7 +720,7 @@ In this chapter, we will learn a new Dockerfile keyword: `COPY`.
 
 ----
 
-Build some Golang
+### Build some Golang
 
 We want to build a container that compiles a basic "Hello world" program in Go.
 Here is the program, hello.go:
@@ -764,7 +766,7 @@ Run it
 ```bash
 docker run debian_go
 Hello, world!
-````
+```
 
 ----
 
@@ -780,23 +782,23 @@ Hello, world!
 * You can COPY whole directories recursively.
 * Older Dockerfiles also have the ADD instruction.  
 It is similar but can automatically extract archives.
-    * If we really wanted to compile Go code in a compiler, we would:
+    * If we really wanted to compile Go code in a container, we would:
         * Place it in a different directory, with the WORKDIR instruction.
-        * Even better, use the gcc official image.
+        * Even better, use the golang official image.
 
 ----
 
 ### Uploading our images to the Docker Hub
 We have built our first images.
-We could share those images through the Docker Hub. (requires Docker Hub account)
-But the steps would be:
-* have an account on the Docker Hub
+We could share those images through the Docker Hub. 
+The steps would be:
+* create an account on the Docker Hub
 * tag our image accordingly (i.e. username/imagename)
 * docker push username/imagename
 
 Anybody can now docker run username/imagename from any Docker host.
 
-Images can be set to be private as well
+Repositories can be set to be private as well
 
 ----
 
@@ -807,7 +809,7 @@ We've learned:
 * How to build an image interactively
 * How to create a Dockerfile
 * How to create an image from a Dockerfile
-* The usage of `CMD`and `ENTRYPOINT``
+* The usage of `CMD`and `ENTRYPOINT`
 * The usage of `COPY`
 
 ----
