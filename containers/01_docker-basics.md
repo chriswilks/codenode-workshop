@@ -31,7 +31,6 @@ it will echo "hello world" to the default stdout
 * We used one of the smallest images available: busybox.
 * We ran a single process and echo'ed hello world.
 
-Though, it's not a very useful container 
 
 ----
 
@@ -41,7 +40,7 @@ Please type:
 docker run -ti ubuntu /bin/bash
 ```
 This is a brand new container
-It runs a bare-bones, no-frills ubuntu system.  
+It runs a bare-bones ubuntu system.  
 `-it` is shorthand for `-i` `-t`.  
 `-i` tells Docker to connect us to the container's stdin.  
 `-t` tells Docker that we want a pseudo-terminal.  
@@ -112,11 +111,11 @@ We will look at how to:
 
 ### A non-interactive container
 ```bash
-docker run jpetazzo/clock
+docker run redis
 ```
 This container will run forever.
-* Docker has automatically downloaded the image jpetazzo/clock.
-* This is a user image (we will go over images later)
+* Docker has automatically downloaded the image redis.
+* This is an "official image" (discussed later)
 * To stop it, press ^C.
 
 ----
@@ -125,7 +124,7 @@ This container will run forever.
 
 Containers can be started in the background, with the `-d` flag (daemon mode):
 ```bash
-docker run -d jpetazzo/clock
+docker run -d redis
 ```
 We don't see the output of the container.  
 
@@ -167,12 +166,12 @@ docker ps -ql
 ```
 
 This is helpful for scripting.
-E.G `docker rm -f $(docker ps -ql)`
+e.g. `docker rm -f $(docker ps -ql)`
 
 ----
 
 ### Viewing logs of a containers
-View the logs of the jpetazzo/clock container  
+View the logs of the redis container  
 `docker ps` to see the CONTAINER ID
 ```bash
 docker logs <CONTAINER ID>
@@ -270,11 +269,15 @@ $ docker attach <containerID>
     * If you hit ^C, the signal will be proxied to the container.
 
 ----
+### Prefer docker exec
 
-### Checking container output
+```
+ $ docker exec -it <containerID> bash
+```
 
-* `docker attach` - to send input to the container  
-* `docker logs` - to see the output of a container
+* Doesn't matter if started without -it
+* Starts a new process
+    * Need to specify command
 
 ----
 
