@@ -387,7 +387,7 @@ docker build -t figlet .
 
 The output of docker build looks like this:
 ```
-docker build -t filget .
+docker build -t figlet .
 Sending build context to Docker daemon 84.48 kB
 Step 1 : FROM ubuntu
  ---> 42118e3df429
@@ -417,7 +417,7 @@ Sending build context to Docker daemon 84.48 kB
 
 ### Executing each step
 ```
-docker build -t filget .
+docker build -t figlet .
 Sending build context to Docker daemon 84.48 kB
 Step 1 : FROM ubuntu
  ---> 42118e3df429
@@ -441,7 +441,7 @@ Successfully built ccd7cf351f38
 Try re-running the same build:
 
 ```
-docker build -t filget .
+docker build -t figlet .
 ```
 
 ----

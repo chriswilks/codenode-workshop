@@ -54,7 +54,7 @@ figlet hello
 ----
 
 ### Install a package
-filget is missing in the container, so let's install it using Ubuntu's package manager **apt**
+Figlet is missing in the container, so let's install it using Ubuntu's package manager **apt**
 ```bash
 apt-get update && apt-get install -y figlet
 ```
