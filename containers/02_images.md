@@ -802,7 +802,7 @@ Images can be set to be private as well
 
 ### Summary
 
-We've learned how to:
+We've learned:
 * What an image is
 * How to build an image interactively
 * How to create a Dockerfile
