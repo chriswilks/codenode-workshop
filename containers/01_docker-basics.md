@@ -111,11 +111,11 @@ We will look at how to:
 
 ### A non-interactive container
 ```bash
-docker run jpetazzo/clock
+docker run redis
 ```
 This container will run forever.
-* Docker has automatically downloaded the image jpetazzo/clock.
-* This is a user image (we will go over images later)
+* Docker has automatically downloaded the image redis.
+* This is an "official image" (discussed later)
 * To stop it, press ^C.
 
 ----
@@ -124,7 +124,7 @@ This container will run forever.
 
 Containers can be started in the background, with the `-d` flag (daemon mode):
 ```bash
-docker run -d jpetazzo/clock
+docker run -d redis
 ```
 We don't see the output of the container.  
 
@@ -166,12 +166,12 @@ docker ps -ql
 ```
 
 This is helpful for scripting.
-E.G `docker rm -f $(docker ps -ql)`
+e.g. `docker rm -f $(docker ps -ql)`
 
 ----
 
 ### Viewing logs of a containers
-View the logs of the jpetazzo/clock container  
+View the logs of the redis container  
 `docker ps` to see the CONTAINER ID
 ```bash
 docker logs <CONTAINER ID>
@@ -269,11 +269,15 @@ $ docker attach <containerID>
     * If you hit ^C, the signal will be proxied to the container.
 
 ----
+### Prefer docker exec
 
-### Checking container output
+```
+ $ docker exec -it <containerID> bash
+```
 
-* `docker attach` - to send input to the container  
-* `docker logs` - to see the output of a container
+* Doesn't matter if started without -it
+* Starts a new process
+    * Need to specify command
 
 ----
 
