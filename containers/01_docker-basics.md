@@ -31,7 +31,6 @@ it will echo "hello world" to the default stdout
 * We used one of the smallest images available: busybox.
 * We ran a single process and echo'ed hello world.
 
-Though, it's not a very useful container 
 
 ----
 
@@ -41,7 +40,7 @@ Please type:
 docker run -ti ubuntu /bin/bash
 ```
 This is a brand new container
-It runs a bare-bones, no-frills ubuntu system.  
+It runs a bare-bones ubuntu system.  
 `-it` is shorthand for `-i` `-t`.  
 `-i` tells Docker to connect us to the container's stdin.  
 `-t` tells Docker that we want a pseudo-terminal.  
