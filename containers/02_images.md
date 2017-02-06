@@ -45,15 +45,12 @@ If an image is read-only, how do we change it?
 
 ----
 
-### Creating the 1st images
+### Creating the lowest layer
 
 There is a special empty image called scratch.
-* It allows to build from scratch.
-The `docker import` command loads a tarball into Docker.
-* The imported tarball becomes a standalone image.
-* That new image has a single layer.
+* It has no files or operating system
 
-Note: you will probably never have to do this yourself.
+Note: you will probably never need to use scratch.
 
 ----
 
@@ -73,14 +70,14 @@ There are three namespaces:
 * Root-like
     * ubuntu
 * User (and organizations)
-    * jpetazzo/clock
+    * amouat/network-utils
 * Self-Hosted
     * registry.example.com:5000/my-private-image
 
 ----
 
 ### Root namespaces
-The root namespace is for official images. They are put there by Docker Inc., but they are generally authored and maintained by third parties.
+The root namespace is for "official images". They are put there by Docker Inc., but they are generally authored and maintained by third parties.
 
 Those images include:
 * Small, "swiss-army-knife" images like busybox.
@@ -92,11 +89,11 @@ Those images include:
 ### User namespaces
 The user namespace holds images for Docker Hub users and organizations.
 For example:
-* jpetazzo/clock
+* mesosphere/marathon
 The Docker Hub user is:
-* jpetazzo
+* mesosphere
 The image name is:
-* clock
+* marathon
 
 ----
 
@@ -354,7 +351,7 @@ mkdir myimage
 cd myimage
 vim Dockerfile
 ```
-Of course, you can use any other editor of your choice. Or using a container with the editor of your choice :-)
+Of course, you can use any other editor of your choice. Or use a container with the editor of your choice :-)
 
 ----
 
@@ -372,7 +369,7 @@ RUN apt-get install -y figlet
 
 ----
 
-### Build that… image
+### Build the image
 Save our file, then execute:
 ```
 docker build -t figlet .
@@ -451,8 +448,8 @@ docker build -t figlet .
 * After each build step, Docker takes a snapshot.
 * Before executing a step, Docker checks if it has already built the same sequence.
 * Docker uses the exact strings defined in your Dockerfile:
-    * `RUN apt-get install figlet cowsay` is different from
-    * `RUN apt-get install cowsay figlet`
+    * `RUN apt-get install figlet curl` is different from
+    * `RUN apt-get install curl figlet`
     * `RUN apt-get update` is not re-executed when the mirrors are updated
 
 You can force a rebuild with docker build --no-cache ....
@@ -492,32 +489,6 @@ IMAGE               CREATED             CREATED BY                              
 <missing>           3 weeks ago         /bin/sh -c rm -rf /var/lib/apt/lists/*          0 B                 
 <missing>           3 weeks ago         /bin/sh -c set -xe   && echo '#!/bin/sh' > /u   745 B               
 <missing>           3 weeks ago         /bin/sh -c #(nop) ADD file:fdbd881d78f9d7d924   124.8 MB        
-```
-
-----
-
-### Do it youself (homework)
-
-* Create a Dockerfile
-    * Install cowsay
-    * make the symbolic link `ln -s /usr/games/cowsay /usr/bin/cowsay` static in the Dockerfile
-* Build the image
-* Run the container from that image
-* Run cowsay
-
-----
-
-### Possible Solution
-
-```
-FROM ubuntu
-RUN apt-get update
-RUN apt-get install -y cowsay
-RUN ln -s /usr/games/cowsay /usr/bin/cowsay
-```
-```
-docker run -ti cowsay
-cowsay hello
 ```
 
 ----
@@ -737,30 +708,6 @@ root@c138bf9ec9ad:/#
 
 ----
 
-### Do it yourself (homework)
-* Create a Dockerfile
-    * Base image is ubuntu
-    * install cowsay
-    * Create the symbolic link
-    * Create an ENTRYPOINT to define the base command
-    * And with CMD define the default parameter(hello) for this command.
-* Build the image
-* run the image
-
-----
-
-### Possible Solution
-```bash
-FROM ubuntu
-RUN apt-get update
-RUN apt-get install -y cowsay
-RUN ln -s /usr/games/cowsay /usr/bin/cowsay
-ENTRYPOINT ["cowsay"]
-CMD ["hello"]
-```
-
-----
-
 ### Copying files during the build
 So far, we have installed things in our container images by downloading packages. 
 We can also copy files from the build context to the container that we are building. 
@@ -771,15 +718,16 @@ In this chapter, we will learn a new Dockerfile keyword: `COPY`.
 
 ----
 
-Build some C code
+Build some Golang
 
-We want to build a container that compiles a basic "Hello world" program in C.
-Here is the program, hello.c:
-```c
-int main () {
-puts("Hello, world!");
-return 0;
-}
+We want to build a container that compiles a basic "Hello world" program in Go.
+Here is the program, hello.go:
+```golang
+package main
+ 
+import "fmt"
+ 
+func main() { fmt.Println("Hello world!") }
 ```
 
 Let's create a new directory, and put this file in there.
@@ -794,11 +742,13 @@ When installing it, don't forget to specify the `-y` flag, otherwise the build w
 Then we will use COPY to place the source file into the container.
 
 ```bash
-FROM ubuntu
+FROM debian
+
 RUN apt-get update
-RUN apt-get install -y build-essential
-COPY hello.c /
-RUN make hello
+RUN apt-get install -y golang
+
+COPY hello.go /
+RUN go build /hello.go
 CMD /hello
 ```
 
@@ -808,11 +758,11 @@ CMD /hello
 
 Build it
 ```bash
-docker build -t ubuntu_c .
+docker build -t debian_go .
 ```
 Run it
 ```bash
-docker run ubuntu_c
+docker run debian_go
 Hello, world!
 ````
 
@@ -820,7 +770,7 @@ Hello, world!
 
 ### Copy and the build cache
 * Run the build again.
-* Now, modify hello.c and run the build again.
+* Now, modify hello.go and run the build again.
 * Docker can cache steps involving COPY.
 * Those steps will not be executed again if the files haven't been changed.
 
@@ -830,9 +780,9 @@ Hello, world!
 * You can COPY whole directories recursively.
 * Older Dockerfiles also have the ADD instruction.  
 It is similar but can automatically extract archives.
-    * If we really wanted to compile C code in a compiler, we would:
+    * If we really wanted to compile Go code in a compiler, we would:
         * Place it in a different directory, with the WORKDIR instruction.
-        * Even better, use the gcc official image. (but it’s huge 1,1 GB, whyever)
+        * Even better, use the gcc official image.
 
 ----
 
