@@ -637,7 +637,7 @@ Successfully built e1003780fba8
 
 Run it
 ```bash
-docker run -ti figlet g'day!
+docker run -ti figlet "g'day!"
        _     _             _
   __ _( ) __| | __ _ _   _| |
  / _` |/ / _` |/ _` | | | | |
