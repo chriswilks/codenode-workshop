@@ -445,6 +445,7 @@ docker attach <container name>
 ----
 
 * Change directory into the /www/website folder 
+
 Verify that you can see both the test.txt and test2.txt files
 
 ----

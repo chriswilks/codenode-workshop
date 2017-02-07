@@ -9,7 +9,7 @@ Check that kubectl is configured to talk to your cluster, by running the kubectl
 kubectl version
 ```
 
-You can see both the client and the server versions: 1.4.
+This should show both the client and server version.
 
 ----
 
