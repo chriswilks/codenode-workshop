@@ -43,7 +43,7 @@ shipping-746110140        1         1         1m
 ### Scaling ReplicaSet
 
 
-We can try scaling a service by increasing the replicas in the ReplicaSet
+We can try to scale-up  by increasing the replicas in the ReplicaSet:
 ```
 $ kubectl scale --replicas=3 rs/front-end-1198077563
 replicaset "front-end-1198077563" scaled
@@ -61,7 +61,9 @@ deployment "front-end" scaled
 ```
 ```
 $ kubectl describe deployment front-end
+...
 ```
 ```
 $ kubectl get pods
+...
 ```
