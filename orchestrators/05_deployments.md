@@ -40,18 +40,21 @@ shipping-746110140        1         1         1m
 
 ----
 
-### Scaling Deployments
+### Scaling ReplicaSet
 
-ReplicaSets are scaled through the Deployment or independently. Use the `kubectl scale` command to scale:
 
+We can try scaling a service by increasing the replicas in the ReplicaSet
 ```
 $ kubectl scale --replicas=3 rs/front-end-1198077563
 replicaset "front-end-1198077563" scaled
 ```
+If you quickly look at `kubectl get pods` you should see new pods are created
+but terminated again!
 
-```
-$ kubectl describe rs front-end-1198077563
-```
+----
+
+Our ReplicaSet is being managed by a Deployment, so the scaling must be done at
+the deployment level:
 ```
 $ kubectl scale deployments front-end --replicas=2
 deployment "front-end" scaled
