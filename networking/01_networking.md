@@ -14,7 +14,7 @@ We will also explain the different network models used by Docker.
 
 Run the Docker Hub image nginx, which contains a basic web server:
 ```bash
-docker run -d -P nginx
+$ docker run -d -P nginx
 ```
 
 Docker will download the image from the Docker Hub if not present locally.
@@ -30,7 +30,7 @@ But, how do we connect to our web server now?
 
 Find the port of the webserver:
 ```bash
-docker ps
+$ docker ps
 ... PORTS                                           NAMES
 ... 0.0.0.0:32772->80/tcp, 0.0.0.0:32771->443/tcp   clever_chandrasekhar
 ```
@@ -60,8 +60,8 @@ This will connect to the container on port 32772
 ### Manual allocation of ports
 If you want to set port numbers yourself:
 ```bash
-docker run -d -p 80:80 nginx
-docker run -d -p 8001:80 nginx
+$ docker run -d -p 80:80 nginx
+$ docker run -d -p 8001:80 nginx
 ```
 
 * We are running two NGINX web servers.
@@ -87,7 +87,7 @@ Then start your container by setting the port numbers manually.
 We can use the docker inspect command to find the IP address of the container.
 
 ```bash
-docker inspect --format '{{ json .NetworkSettings.IPAddress }}' $(docker ps -lq)
+$ docker inspect --format '{{ json .NetworkSettings.IPAddress }}' $(docker ps -lq)
 "172.17.0.3"
 ```
 
@@ -179,7 +179,7 @@ f0ece9ce4283        none                   null                local
 ### Creating a network
 Let's create a network.
 ```bash
-docker network create workshop-z2h
+$ docker network create workshop-z2h
 ```
 The network is now visible with the `network ls` command:
 ```bash
@@ -203,11 +203,11 @@ d1294237576a        workshop-z2h           bridge              local
 We will create two named containers on this network.
 First, let's create this container in the background.
 ```bash
-docker run -dti --name con1 --net workshop-z2h alpine sh
+$ docker run -dti --name con1 --net workshop-z2h alpine sh
 ```
 Now, create another container in this network in the foreground.
 ```bash
-docker run -ti --name con2 --net workshop-z2h alpine sh
+$ docker run -ti --name con2 --net workshop-z2h alpine sh
 ```
 
 ----
@@ -215,7 +215,7 @@ docker run -ti --name con2 --net workshop-z2h alpine sh
 ### Communication between containers
 From our new container con2, we can resolve and ping con1, using its assigned name:
 ```bash
-ping -c4 con1
+$ ping -c4 con1
 PING con1 (172.18.0.2): 56 data bytes
 64 bytes from 172.18.0.2: seq=0 ttl=64 time=0.111 ms
 64 bytes from 172.18.0.2: seq=1 ttl=64 time=0.098 ms
@@ -248,19 +248,19 @@ As of Docker 1.10, the docker daemon implements an embedded DNS server which pro
 
 Let's create a new network and container in this network:
 ```bash
-docker network create z2h-open
-docker run -ti --name con3 --net z2h-open alpine sh
+$ docker network create z2h-open
+$ docker run -ti --name con3 --net z2h-open alpine sh
 ```
 con3 can’t ping a container in a different network
 ```
-ping -c4 con1
+$ ping -c4 con1
 ping: bad address 'con1'
 ```
 
 You need to connect the container to the new network:
 ```bash
-docker network connect workshop-z2h con3
-docker attach con3
+$ docker network connect workshop-z2h con3
+$ docker attach con3
 / # ping -c1 con1
 PING con1 (172.18.0.2): 56 data bytes
 64 bytes from 172.18.0.2: seq=0 ttl=64 time=0.104 ms
@@ -297,9 +297,9 @@ Hint: curl needs to be installed `apt-get update && apt-get install -y curl`
 
 ### Possible Solution
 ```bash
-docker run -dtiP --name web --net workshop nginx
-docker run -ti --name ubuntu --net workshop ubuntu
-curl -i http://web:80
+$ docker run -dtiP --name web --net workshop nginx
+$ docker run -ti --name ubuntu --net workshop ubuntu
+$ curl -i http://web:80
 ```
 
 ----
