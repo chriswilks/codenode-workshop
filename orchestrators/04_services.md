@@ -14,7 +14,7 @@ In this lab you will create the `k8s-hello-world` service and "expose" the `k8s-
 Explore the k8s-hello-world service configuration file:
 
 ```
-$ cat services/k8s-hello-world.yaml
+$ cat service.yaml
 apiVersion: v1
 kind: Service
 metadata:
