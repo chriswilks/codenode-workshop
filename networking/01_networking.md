@@ -148,7 +148,7 @@ All the previous drivers are still available.
 Docker now has the notion of a network, and a new top-level command to manipulate
 and see those networks: docker network.
 ```bash
-docker network ls
+$ docker network ls
 NETWORK ID          NAME                   DRIVER              SCOPE
 1670debb4a0d        bridge                 bridge              local               
 9cfb79738802        dockerzipkin_default   bridge              local               
@@ -259,6 +259,7 @@ ping: bad address 'con1'
 
 You need to connect the container to the new network:
 ```bash
+^P^Q
 $ docker network connect workshop-z2h con3
 $ docker attach con3
 / # ping -c1 con1
