@@ -5,3 +5,4 @@
 
 `sudo /home/installk8s.sh`
 
+`sudo chown -R csuser /home/csuser/.kube`

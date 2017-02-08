@@ -18,8 +18,8 @@ An Ingress is a collection of rules that allow inbound connections to reach the 
 
 ----
 
-It can be configured:
-* to give services externally-reachable urls
+It can be configured to:
+* give services externally-reachable URLs
 * load balance traffic
 * terminate SSL
 * offer name based virtual hosting 
@@ -30,12 +30,12 @@ An Ingress controller is responsible for fulfilling the Ingress, usually with a 
 
 ### Ingress controller
 
-In order for the Ingress resource to work, the cluster must have an Ingress controller running
+In order for the Ingress resource to work, the cluster must have an Ingress controller running.
 
 An Ingress Controller is a daemon, deployed as a Kubernetes Pod, that watches the ApiServer's /ingresses endpoint for updates to the Ingress resource. Its job is to satisfy requests for ingress.
 
 Workflow:
-* Poll until apiserver reports a new Ingress
+* Poll until ApiServer reports a new Ingress
 * Write the LB config file based on a go text/template
 * Reload LB config
 

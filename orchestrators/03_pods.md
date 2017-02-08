@@ -12,10 +12,11 @@ We'll create a Pod named `k8s-hello-world` and interact with it using the kubect
 
 ### Creating Pods
 
-Explore the `k8s-hello-world` pod configuration file:
+Explore the `k8s-hello-world` pod configuration file, which is in the
+orchestrators folder:
 
 ```
-cat pod.yaml
+$ cat pod.yaml
 apiVersion: v1
 kind: Pod
 metadata:
@@ -32,7 +33,7 @@ spec:
 Create the pod using kubectl:
 
 ```
-kubectl create -f pod.yaml
+$ kubectl create -f pod.yaml
 ```
 
 ----
@@ -42,11 +43,13 @@ kubectl create -f pod.yaml
 Use the `kubectl get` and `kubect describe` commands to view details for the `k8s-hello-world` Pod:
 
 ```
-kubectl get pods
+$ kubectl get pods
+...
 ```
 
 ```
-kubectl describe pods <pod-name>
+$ kubectl describe pods <pod-name>
+...
 ```
 
 ----
@@ -57,7 +60,6 @@ kubectl describe pods <pod-name>
 * What node is the `k8s-hello-world` Pod running on?
 * What containers are running in the `k8s-hello-world` Pod?
 * What are the labels attached to the `k8s-hello-world` Pod?
-* What arguments are set on the `k8s-hello-world` container?
 
 ----
 
@@ -68,11 +70,11 @@ Pods are allocated a private IP address by default and cannot be reached outside
 Use two terminals. One to run the `kubectl port-forward` command, and the other to issue `curl` commands.
 
 ```
-kubectl port-forward k8s-hello-world 10080:8080
+$ kubectl port-forward k8s-hello-world 10080:8080
 ```
 
 ```
-curl http://127.0.0.1:10080
+$ curl http://127.0.0.1:10080
 ```
 
 ----
@@ -82,7 +84,7 @@ curl http://127.0.0.1:10080
 Use the `kubectl logs` command to view the logs for the `k8s-hello-world` Pod:
 
 ```
-kubectl logs k8s-hello-world
+$ kubectl logs k8s-hello-world
 ```
 
 > Use the -f flag and observe what happens.
@@ -94,5 +96,5 @@ kubectl logs k8s-hello-world
 Use the `kubectl exec` command to run an interactive shell inside the `k8s-hello-world` Pod:
 
 ```
-kubectl exec monolith --stdin --tty -c k8s-hello-world /bin/sh
+$ kubectl exec k8s-hello-world --stdin --tty -c k8s-hello-world /bin/sh
 ```
